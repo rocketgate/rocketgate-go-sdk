@@ -194,7 +194,7 @@ func (r GatewayService) BuildPaymentLink(req *request.GatewayRequest,
 }
 
 // SetTestMode Enable/Disable testing mode.
-func (r GatewayService) SetTestMode(testingMode bool) {
+func (r *GatewayService) SetTestMode(testingMode bool) {
 	if testingMode {
 		r._ROCKETGATE_HOST = _ROCKETGATE_TEST_HOST
 		r._ROCKETGATE_PROTOCOL = _ROCKETGATE_TEST_PROTOCOL
@@ -207,7 +207,7 @@ func (r GatewayService) SetTestMode(testingMode bool) {
 }
 
 // SetHost Set the host used by the GatewayService.
-func (r GatewayService) SetHost(hostname string) {
+func (r *GatewayService) SetHost(hostname string) {
 	hostname = strings.TrimSpace(hostname)
 	if hostname != "" {
 		r._ROCKETGATE_HOST = hostname
@@ -215,7 +215,7 @@ func (r GatewayService) SetHost(hostname string) {
 }
 
 // SetProtocol Set the protocol used by the GatewayService.
-func (r GatewayService) SetProtocol(protocol string) {
+func (r *GatewayService) SetProtocol(protocol string) {
 	protocol = strings.TrimSpace(protocol)
 	if protocol != "" {
 		r._ROCKETGATE_PROTOCOL = protocol
@@ -223,14 +223,14 @@ func (r GatewayService) SetProtocol(protocol string) {
 }
 
 // SetPortNo Set the port number used by the GatewayService.
-func (r GatewayService) SetPortNo(portNo int) {
+func (r *GatewayService) SetPortNo(portNo int) {
 	if portNo > 0 {
 		r._ROCKETGATE_PORTNO = portNo
 	}
 }
 
 // SetServlet Set the servlet used by the GatewayService.
-func (r GatewayService) SetServlet(servlet string) {
+func (r *GatewayService) SetServlet(servlet string) {
 	servlet = strings.TrimSpace(servlet)
 	if servlet != "" {
 		r._ROCKETGATE_SERVLET = servlet
@@ -238,14 +238,14 @@ func (r GatewayService) SetServlet(servlet string) {
 }
 
 // SetConnectTimeout Set the timeout for connecting to a remote host
-func (r GatewayService) SetConnectTimeout(timeout int) {
+func (r *GatewayService) SetConnectTimeout(timeout int) {
 	if timeout > 0 {
 		r._ROCKETGATE_CONNECT_TIMEOUT = timeout
 	}
 }
 
 // SetReadTimeout Set the timeout for reading a response  from a remote host.
-func (r GatewayService) SetReadTimeout(timeout int) {
+func (r *GatewayService) SetReadTimeout(timeout int) {
 	if timeout > 0 {
 		r._ROCKETGATE_READ_TIMEOUT = timeout
 	}
