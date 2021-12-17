@@ -93,7 +93,7 @@ func (r GatewayService) PerformTicket(req *request.GatewayRequest,
 }
 
 // PerformPurchase Perform a complete purchase transaction using the information contained in a request
-func (r *GatewayService) PerformPurchase(req *request.GatewayRequest,
+func (r GatewayService) PerformPurchase(req *request.GatewayRequest,
 	resp *response.GatewayResponse) bool {
 	req.Set(request.TRANSACTION_TYPE, _TRANSACTION_CC_SALE)
 	if req.Get(request.REFERENCE_GUID) != "" {
@@ -194,7 +194,7 @@ func (r GatewayService) BuildPaymentLink(req *request.GatewayRequest,
 }
 
 // SetTestMode Enable/Disable testing mode.
-func (r GatewayService) SetTestMode(testingMode bool) {
+func (r *GatewayService) SetTestMode(testingMode bool) {
 	if testingMode {
 		r._ROCKETGATE_HOST = _ROCKETGATE_TEST_HOST
 		r._ROCKETGATE_PROTOCOL = _ROCKETGATE_TEST_PROTOCOL
@@ -207,7 +207,7 @@ func (r GatewayService) SetTestMode(testingMode bool) {
 }
 
 // SetHost Set the host used by the GatewayService.
-func (r GatewayService) SetHost(hostname string) {
+func (r *GatewayService) SetHost(hostname string) {
 	hostname = strings.TrimSpace(hostname)
 	if hostname != "" {
 		r._ROCKETGATE_HOST = hostname
@@ -215,7 +215,7 @@ func (r GatewayService) SetHost(hostname string) {
 }
 
 // SetProtocol Set the protocol used by the GatewayService.
-func (r GatewayService) SetProtocol(protocol string) {
+func (r *GatewayService) SetProtocol(protocol string) {
 	protocol = strings.TrimSpace(protocol)
 	if protocol != "" {
 		r._ROCKETGATE_PROTOCOL = protocol
@@ -223,14 +223,14 @@ func (r GatewayService) SetProtocol(protocol string) {
 }
 
 // SetPortNo Set the port number used by the GatewayService.
-func (r GatewayService) SetPortNo(portNo int) {
+func (r *GatewayService) SetPortNo(portNo int) {
 	if portNo > 0 {
 		r._ROCKETGATE_PORTNO = portNo
 	}
 }
 
 // SetServlet Set the servlet used by the GatewayService.
-func (r GatewayService) SetServlet(servlet string) {
+func (r *GatewayService) SetServlet(servlet string) {
 	servlet = strings.TrimSpace(servlet)
 	if servlet != "" {
 		r._ROCKETGATE_SERVLET = servlet
@@ -238,21 +238,21 @@ func (r GatewayService) SetServlet(servlet string) {
 }
 
 // SetConnectTimeout Set the timeout for connecting to a remote host
-func (r GatewayService) SetConnectTimeout(timeout int) {
+func (r *GatewayService) SetConnectTimeout(timeout int) {
 	if timeout > 0 {
 		r._ROCKETGATE_CONNECT_TIMEOUT = timeout
 	}
 }
 
 // SetReadTimeout Set the timeout for reading a response  from a remote host.
-func (r GatewayService) SetReadTimeout(timeout int) {
+func (r *GatewayService) SetReadTimeout(timeout int) {
 	if timeout > 0 {
 		r._ROCKETGATE_READ_TIMEOUT = timeout
 	}
 }
 
 /* Private functions */
-func (r GatewayService) getServiceUrl(host string, req *request.GatewayRequest) string {
+func (r *GatewayService) getServiceUrl(host string, req *request.GatewayRequest) string {
 	urlProtocol := req.Get(request.GATEWAY_PROTOCOL)
 	urlServlet := req.Get(request.GATEWAY_SERVLET)
 	urlPortNo := req.GetInt(request.GATEWAY_PORTNO)
@@ -267,16 +267,16 @@ func (r GatewayService) getServiceUrl(host string, req *request.GatewayRequest) 
 		urlServlet = r._ROCKETGATE_SERVLET
 	}
 
-	url := url.URL{
+	serviceUrl := url.URL{
 		Scheme: urlProtocol,
 		Host:   host + ":" + fmt.Sprint(urlPortNo),
 		Path:   urlServlet,
 	}
 
-	return url.String()
+	return serviceUrl.String()
 }
 
-func (r GatewayService) getConnectTimeout(req *request.GatewayRequest) int64 {
+func (r *GatewayService) getConnectTimeout(req *request.GatewayRequest) int64 {
 	connectTimeout := req.GetInt(request.GATEWAY_CONNECT_TIMEOUT)
 	if connectTimeout < 0 {
 		connectTimeout = r._ROCKETGATE_CONNECT_TIMEOUT
@@ -284,7 +284,7 @@ func (r GatewayService) getConnectTimeout(req *request.GatewayRequest) int64 {
 	return int64(connectTimeout) * 1000
 }
 
-func (r GatewayService) getServerNameAndCleanFailedParams(req *request.GatewayRequest, resp *response.GatewayResponse) (string, bool) {
+func (r *GatewayService) getServerNameAndCleanFailedParams(req *request.GatewayRequest, resp *response.GatewayResponse) (string, bool) {
 	fullURL := req.Get(request.GATEWAY_URL)
 	if fullURL == "" {
 		fullURL = req.Get(request.EMBEDDED_FIELDS_TOKEN)
@@ -316,7 +316,7 @@ func (r GatewayService) getServerNameAndCleanFailedParams(req *request.GatewayRe
 	return serverName, true
 }
 
-func (r GatewayService) performTransaction(req *request.GatewayRequest,
+func (r *GatewayService) performTransaction(req *request.GatewayRequest,
 	resp *response.GatewayResponse) bool {
 	serverName, ok := r.getServerNameAndCleanFailedParams(req, resp)
 	if !ok {
@@ -384,13 +384,13 @@ func (r GatewayService) performTransaction(req *request.GatewayRequest,
 	return false
 }
 
-func (r GatewayService) performTransactionServer(server string, req *request.GatewayRequest,
+func (r *GatewayService) performTransactionServer(server string, req *request.GatewayRequest,
 	resp *response.GatewayResponse) int {
 	resp.Reset()
 	body := req.ToXMLString()
-	url := r.getServiceUrl(server, req)
+	serviceUrl := r.getServiceUrl(server, req)
 
-	httpReq, err := http.NewRequest("POST", url, strings.NewReader(body))
+	httpReq, err := http.NewRequest("POST", serviceUrl, strings.NewReader(body))
 	if err != nil {
 		resp.Set(response.EXCEPTION, err.Error())
 		resp.SetResults(response.RESPONSE_SYSTEM_ERROR, response.REASON_UNABLE_TO_CONNECT)
@@ -433,7 +433,7 @@ func (r GatewayService) performTransactionServer(server string, req *request.Gat
 	return resp.GetResponseCode()
 }
 
-func (r GatewayService) performTargetedTransaction(req *request.GatewayRequest,
+func (r *GatewayService) performTargetedTransaction(req *request.GatewayRequest,
 	resp *response.GatewayResponse) bool {
 	serverName, ok := r.getServerNameAndCleanFailedParams(req, resp)
 	if !ok {
@@ -455,7 +455,7 @@ func (r GatewayService) performTargetedTransaction(req *request.GatewayRequest,
 		separator := strings.Index(serverName, ".")
 		if separator > 0 {
 			prefix := serverName[0:separator]
-			serverName = serverName[separator:len(serverName)]
+			serverName = serverName[separator:]
 			serverName = prefix + "-" + fmt.Sprint(siteNo) + serverName
 		}
 	}
@@ -467,7 +467,7 @@ func (r GatewayService) performTargetedTransaction(req *request.GatewayRequest,
 	}
 }
 
-func (r GatewayService) performConfirmation(confirmationType string, req *request.GatewayRequest,
+func (r *GatewayService) performConfirmation(confirmationType string, req *request.GatewayRequest,
 	resp *response.GatewayResponse) bool {
 	//	Verify that we have a transaction ID for the confirmation message.
 	confirmGUID := resp.Get(response.TRANSACT_ID)
