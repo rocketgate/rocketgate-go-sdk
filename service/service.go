@@ -54,6 +54,7 @@ type GatewayService struct {
 	_ROCKETGATE_CONNECT_TIMEOUT int
 	_ROCKETGATE_READ_TIMEOUT    int
 	_ROCKETGATE_SERVLET         string
+	_ROCKETGATE_HTTP_CLIENT		*http.Client
 }
 
 func NewGatewayService() *GatewayService {
@@ -64,6 +65,7 @@ func NewGatewayService() *GatewayService {
 	service._ROCKETGATE_CONNECT_TIMEOUT = 10
 	service._ROCKETGATE_READ_TIMEOUT = 90
 	service._ROCKETGATE_SERVLET = "/gateway/servlet/ServiceDispatcherAccess"
+	service._ROCKETGATE_HTTP_CLIENT = &http.Client{}
 	return &service
 }
 
@@ -251,6 +253,12 @@ func (r *GatewayService) SetReadTimeout(timeout int) {
 	}
 }
 
+func (r *GatewayService) SetHttpClient(client *http.Client) {
+	if client != nil {
+		r._ROCKETGATE_HTTP_CLIENT = client
+	}
+}
+
 /* Private functions */
 func (r *GatewayService) getServiceUrl(host string, req *request.GatewayRequest) string {
 	urlProtocol := req.Get(request.GATEWAY_PROTOCOL)
@@ -401,9 +409,8 @@ func (r *GatewayService) performTransactionServer(server string, req *request.Ga
 	httpReq.Header.Add("user-agent", _CLIENT_TYPE)
 	// TIME out setConnectTimeout
 	// TIME out setReadTimeout
-	client := http.Client{
-		Timeout: time.Second * time.Duration(r.getConnectTimeout(req)),
-	}
+	client := r._ROCKETGATE_HTTP_CLIENT
+	client.Timeout = time.Second * time.Duration(r.getConnectTimeout(req))
 	// Post HTTP request
 	httpResp, err := client.Do(httpReq)
 	if err != nil {
