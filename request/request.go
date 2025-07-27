@@ -186,9 +186,13 @@ const (
 	// TODO For internal use only
 	// REBILL_TRANS_NUMBER For internal use only This comes from rec_transCount
 	REBILL_TRANS_NUMBER GatewayRequestParamType = "rebillTransNumber"
+
 	// REBILL_SUSPEND  Added new elements for suspending and resuming memberships.
-	REBILL_SUSPEND GatewayRequestParamType = "rebillSuspend"
-	REBILL_RESUME  GatewayRequestParamType = "rebillResume"
+	REBILL_SUSPEND    GatewayRequestParamType = "rebillSuspend"
+	REBILL_RESUME     GatewayRequestParamType = "rebillResume"
+	REBILL_REACTIVATE GatewayRequestParamType = "REBILLREACTIVATE"
+	REBILL_RESCHEDULE GatewayRequestParamType = "REBILLRESCHEDULE"
+
 	// REFERRING_MERCHANT_ID added elements for 1-click referrals.
 	REFERRING_MERCHANT_ID GatewayRequestParamType = "referringMerchantID"
 	REFERRED_CUSTOMER_ID  GatewayRequestParamType = "referredCustomerID"
@@ -259,6 +263,8 @@ const (
 	V_3DSECURE_DF_REFERENCE_ID                GatewayRequestParamType = "_3DSECURE_DF_REFERENCE_ID"
 	V_3DSECURE_REDIRECT_URL                   GatewayRequestParamType = "_3DSECURE_REDIRECT_URL"
 	V_3DSECURE_CHALLENGE_MANDATED_INDICATOR   GatewayRequestParamType = "_3DSECURE_CHALLENGE_MANDATED_INDICATOR"
+	V_3DSECURE_ACS_WINDOW_SIZE                GatewayRequestParamType = "_3DSECURE_ACS_WINDOW_SIZE"
+	V_3DSECURE_LOOKUP_CHALLENGE_INDICATOR     GatewayRequestParamType = "_3DSECURE_LOOKUP_CHALLENGE_INDICATOR"
 
 	BROWSER_JAVA_ENABLED  GatewayRequestParamType = "BROWSERJAVAENABLED"
 	BROWSER_LANGUAGE      GatewayRequestParamType = "BROWSERLANGUAGE"
@@ -275,9 +281,10 @@ const (
 	EMBEDDED_FIELDS_TOKEN GatewayRequestParamType = "embeddedFieldsToken"
 
 	// XSELL_MERCHANT_ID Added hosted page style cross-sells.
-	XSELL_MERCHANT_ID    GatewayRequestParamType = "xsellMerchantID"
-	XSELL_CUSTOMER_ID    GatewayRequestParamType = "xsellCustomerID"
-	XSELL_REFERENCE_XACT GatewayRequestParamType = "xsellReferenceXact"
+	XSELL_MERCHANT_ID      GatewayRequestParamType = "xsellMerchantID"
+	XSELL_CUSTOMER_ID      GatewayRequestParamType = "xsellCustomerID"
+	XSELL_REFERENCE_XACT   GatewayRequestParamType = "xsellReferenceXact"
+	XSELL_MERCHANT_ACCOUNT GatewayRequestParamType = "xsellMerchantAccount"
 
 	// Definition of key constants that carry failure information to the servers.
 
@@ -323,4 +330,26 @@ const (
 	SUCCESS_URL GatewayRequestParamType = "SUCCESSURL"
 
 	PROCESSOR_3DS GatewayRequestParamType = "PROCESSOR3DS"
+
+	ALLOW_CARD_DEBIT_CREDIT GatewayRequestParamType = "ALLOW_CARD_DEBIT_CREDIT"
+
+	GOOGLE_PAY_TOKEN GatewayRequestParamType = "GOOGLEPAYTOKEN"
+
+	LANGUAGE               GatewayRequestParamType = "LANGUAGE"
+	MERCHANT_CASCADED_AUTH GatewayRequestParamType = "MERCHANTCASCADEDAUTH"
+	SHOW_PAYMENT_FORM      GatewayRequestParamType = "SHOW_PAYMENT_FORM"
+	STYLE_SHEET            GatewayRequestParamType = "style"
+	STYLE_SHEET2           GatewayRequestParamType = "style2"
+	STYLE_SHEET3           GatewayRequestParamType = "style3"
+	TRANSLATIONS           GatewayRequestParamType = "translations"
+	USE_PRIMARY_SCHEMEID   GatewayRequestParamType = "usePrimarySchemeID"
+	VERSION_INDICATOR      GatewayRequestParamType = "version"
+	ONCLICK_LOGO_URL       GatewayRequestParamType = "onClickLogoURL"
+
+	PAYMENT_LINK_TOKEN GatewayRequestParamType = "PAYMENTLINKTOKEN"
+
+	NETWORK_TOKENIZATION_DISABLED GatewayRequestParamType = "NETWORKTOKENIZATIONDISABLED"
+
+	SUCCESS_POSTBACK_URL GatewayRequestParamType = "SUCCESSPOSTBACKURL"
+	FAILURE_POSTBACK_URL GatewayRequestParamType = "FAILUREPOSTBACKURL"
 )
