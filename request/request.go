@@ -343,7 +343,6 @@ const (
 	STYLE_SHEET3           GatewayRequestParamType = "style3"
 	TRANSLATIONS           GatewayRequestParamType = "translations"
 	USE_PRIMARY_SCHEMEID   GatewayRequestParamType = "usePrimarySchemeID"
-	VERSION_INDICATOR      GatewayRequestParamType = "version"
 	ONCLICK_LOGO_URL       GatewayRequestParamType = "onClickLogoURL"
 
 	PAYMENT_LINK_TOKEN GatewayRequestParamType = "PAYMENTLINKTOKEN"
