@@ -350,7 +350,7 @@ func (r *GatewayService) performTransaction(req *request.GatewayRequest,
 		if hostList == nil {
 			serverList = make([]string, 2)
 			serverList[0] = _ROCKETGATE_GW16_STRING
-			serverList[2] = _ROCKETGATE_GW17_STRING
+			serverList[1] = _ROCKETGATE_GW17_STRING
 		} else {
 			serverList = make([]string, len(hostList))
 			for i := 0; i < len(hostList); i++ {
